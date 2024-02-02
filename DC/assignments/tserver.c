@@ -13,7 +13,7 @@
 #define SERVER_PORT 9129
 
 
-void back_space(char *str)
+void backSpace(char *str)
 {
     int len = strlen(str);
     for (int i = 0; i < len; i++) printf("\b");
@@ -23,7 +23,7 @@ void back_space(char *str)
 }
 
 // Function to handle client communication in a separate thread
-void *handle_client(void *arg)
+void *handleClient(void *arg)
 {
     int client_sockfd = *((int *)arg);
     char client_input[MAX_BUFFER_SIZE];
@@ -51,18 +51,18 @@ void *handle_client(void *arg)
             break;
         }
 
-        back_space("Enter message to send: ");
+        backSpace("Enter message to send: ");
         printf("Client: %s\n", client_input);
         printf("Enter message to send: ");
         fflush(stdout);
     }
 
     close(client_sockfd);
-    pthread_exit(NULL);
+    exit(EXIT_SUCCESS);
 }
 
 // Function to set up the server socket
-int setup_server_socket()
+int setupServerSocket()
 {
     int server_sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if (server_sockfd == -1)
@@ -107,7 +107,7 @@ void *sendThread(void *arg)
 
 int main()
 {
-    int server_sockfd = setup_server_socket();
+    int server_sockfd = setupServerSocket();
     listen(server_sockfd, 5);
 
     while (1)
@@ -126,7 +126,7 @@ int main()
 
         // Create a thread to handle the client communication
         pthread_t client_thread;
-        if (pthread_create(&client_thread, NULL, handle_client, (void *)&client_sockfd) != 0)
+        if (pthread_create(&client_thread, NULL, handleClient, (void *)&client_sockfd) != 0)
         {
             perror("Error creating client thread");
             close(client_sockfd);

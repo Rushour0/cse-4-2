@@ -1,5 +1,13 @@
 *.dSYM
 *.vscode
-*.o
-*.out
 .DS_Store
+
+*
+*.*
+
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
